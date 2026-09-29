@@ -11,6 +11,17 @@ def emotion_detector(text_to_analyze):
     response = requests.post(url, json=myobj, headers=headers)
     formatted_response = json.loads(response.text)
 
+    # Error handling for bad requests
+    if response.status_code == 400:
+        return {
+            'anger': None,
+            'disgust': None,
+            'fear': None,
+            'joy': None,
+            'sadness': None,
+            'dominant_emotion': None
+        }
+
     # Gestion selon que le retour soit une liste ou un dictionnaire
     if isinstance(formatted_response, list):
         emotion_data = formatted_response[0]['emotionPredictions'][0]['emotion']
